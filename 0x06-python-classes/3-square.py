@@ -1,28 +1,26 @@
 #!/usr/bin/python3
-""" module contains: class Square """
+"""This is a class Square defined by size."""
 
 
 class Square:
-    """
-        Square: defines a square
-        Attributes:
-            size (int): size of a square
-        Method:
-            __init__: init of size for each instance
-    """
-
+    """Inizialitation class"""
     def __init__(self, size=0):
-        """ Initialization of attributes for instances
-            Args:
-                size(int): size of the square
+        """The initialization method of the square class
+        Args:
+            size (int): Is the type int private attribute
+        Raises:
+            TypeError: If size is not an integer
+            ValueError: If size is less than 0
         """
-        if (isinstance(size, int)):
-            self.__size = size
-            if size < 0:
-                raise ValueError('size must be >= 0')
-            else:
-                raise TypeError('size must be an integer')
+        self.__size = size
+        if not isinstance(size, int):
+            raise TypeError("size must be an integer")
+        if size < 0:
+            raise ValueError("size must be >= 0")
 
     def area(self):
-        """ Returns the area of the square """
-        return self.__size ** 2
+        """The area public instance method of the square class
+        Return:
+            The square area
+        """
+        return self.__size * self.__size
