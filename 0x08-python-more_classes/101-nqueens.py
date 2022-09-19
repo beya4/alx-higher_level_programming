@@ -28,10 +28,10 @@ def nqueens(n, c=[]):
         return
     if accept(n, c):
         print(c)
-        s = first_candidate(n, c)
-        while s is not None:
-            nqueens(n, s)
-            s = next_candidate(n, s)
+    s = first_candidate(n, c)
+    while s is not None:
+        nqueens(n, s)
+        s = next_candidate(n, s)
 
 
 def reject(n, c):
@@ -55,7 +55,7 @@ def reject(n, c):
             return True
         if abs(last[0] - i[0]) == abs(last[1] - i[1]):
             return True
-        return False
+    return False
 
 
 def accept(n, c):
