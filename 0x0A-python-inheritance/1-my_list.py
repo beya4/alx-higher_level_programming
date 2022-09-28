@@ -1,15 +1,15 @@
 #!/usr/bin/python3
 """
-Print the items of a list
+Contains definiton for the class MyList that inherits from list.
 """
 
 
 class MyList(list):
     """
-    Print the items of a list
+    definiton for the class MyList that inherits from list.
     """
     def print_sorted(self):
-        """
-        prints the list sorted,
-        """
-        print(sorted(self))
+        """Prints list elements(int) in ascending order"""
+
+        sortedlist = sorted(self)
+        print(sortedlist)
