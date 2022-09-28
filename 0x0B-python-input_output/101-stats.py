@@ -1,40 +1,47 @@
 #!/usr/bin/python3
-"""
-reads stdin line by line and computes metrics
-"""
-import sys
 
-file_size = 0
-status_tally = {"200": 0, "301": 0, "400": 0, "401": 0,
-                "403": 0, "404": 0, "405": 0, "500": 0}
-i = 0
-try:
-    for line in sys.stdin:
-        tokens = line.split()
-        if len(tokens) >= 2:
-            a = i
-            if tokens[-2] in status_tally:
-                status_tally[tokens[-2]] += 1
-                i += 1
+"""Statistic Module."""
+import fileinput
+
+
+def print_stats(filesize: int, status_dict: dict) -> None:
+    """Print Statistic."""
+    print(f"File size: {filesize}")
+    for k in sorted(list(status_dict.keys())):
+        print(f"{k}: {status_dict[k]}")
+
+
+def main():
+    """Parse Arguments."""
+    valid_status = [200, 301, 400, 401, 403, 404, 405, 500]
+    i = 0
+    status_dict = {}
+    total_file_size = 0
+    try:
+        for line in fileinput.input():
+            host = line.split()
+
             try:
-                file_size += int(tokens[-1])
-                if a == i:
-                    i += 1
-            except:
-                if a == i:
-                    continue
-        if i % 10 == 0:
-            print("File size: {:d}".format(file_size))
-            for key, value in sorted(status_tally.items()):
-                if value:
-                    print("{:s}: {:d}".format(key, value))
-    print("File size: {:d}".format(file_size))
-    for key, value in sorted(status_tally.items()):
-        if value:
-            print("{:s}: {:d}".format(key, value))
+                filesize = host[-1]
+                total_file_size += int(filesize)
+            except Exception:
+                pass
 
-except KeyboardInterrupt:
-    print("File size: {:d}".format(file_size))
-    for key, value in sorted(status_tally.items()):
-        if value:
-            print("{:s}: {:d}".format(key, value))
+            try:
+                status = host[-2]
+                if int(status) in valid_status:
+                    status_dict[status] = 1 + status_dict.get(status, 0)
+            except Exception:
+                pass
+            i += 1
+
+            if i == 10:
+                print_stats(total_file_size, status_dict)
+                i = 0
+        print_stats(total_file_size, status_dict)
+    except KeyboardInterrupt:
+        print_stats(total_file_size, status_dict)
+        raise
+
+
+main()
